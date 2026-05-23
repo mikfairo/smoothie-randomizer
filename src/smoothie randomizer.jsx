@@ -1,4 +1,4 @@
-import { Heart, RefreshCw, Sparkles, Trash2 } from "lucide-react";
+import { Check, Heart, Pencil, RefreshCw, Sparkles, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 
 const ingredientPools = {
@@ -81,6 +81,8 @@ export default function SmoothieRandomizer() {
   const [smoothie, setSmoothie] = useState(() => buildSmoothie());
   const [isBlending, setIsBlending] = useState(false);
   const [favorites, setFavorites] = useState(() => loadFavorites());
+  const [editingSignature, setEditingSignature] = useState("");
+  const [editingName, setEditingName] = useState("");
 
   const fallingIngredients = useMemo(
     () =>
@@ -124,6 +126,29 @@ export default function SmoothieRandomizer() {
     setFavorites((currentFavorites) =>
       currentFavorites.filter((favorite) => favorite.signature !== signature)
     );
+  }
+
+  function startEditingFavorite(favorite) {
+    setEditingSignature(favorite.signature);
+    setEditingName(favorite.name);
+  }
+
+  function saveFavoriteName(signature) {
+    const nextName = editingName.trim();
+
+    if (!nextName) {
+      setEditingSignature("");
+      setEditingName("");
+      return;
+    }
+
+    setFavorites((currentFavorites) =>
+      currentFavorites.map((favorite) =>
+        favorite.signature === signature ? { ...favorite, name: nextName } : favorite
+      )
+    );
+    setEditingSignature("");
+    setEditingName("");
   }
 
   return (
@@ -213,9 +238,45 @@ export default function SmoothieRandomizer() {
               {favorites.map((favorite) => (
                 <article className="favorite-card" key={favorite.signature}>
                   <div>
-                    <h2>{favorite.name}</h2>
+                    {editingSignature === favorite.signature ? (
+                      <input
+                        className="favorite-name-input"
+                        value={editingName}
+                        onChange={(event) => setEditingName(event.target.value)}
+                        onBlur={() => saveFavoriteName(favorite.signature)}
+                        onKeyDown={(event) => {
+                          if (event.key === "Enter") {
+                            event.currentTarget.blur();
+                          }
+                        }}
+                        aria-label={`Edit name for ${favorite.name}`}
+                        autoFocus
+                      />
+                    ) : (
+                      <h2>{favorite.name}</h2>
+                    )}
                     <p>{favorite.ingredients.map((ingredient) => ingredient.name).join(", ")}</p>
                   </div>
+                  {editingSignature === favorite.signature ? (
+                    <button
+                      className="edit-favorite"
+                      type="button"
+                      onMouseDown={(event) => event.preventDefault()}
+                      onClick={() => saveFavoriteName(favorite.signature)}
+                      aria-label={`Save name for ${favorite.name}`}
+                    >
+                      <Check size={17} aria-hidden="true" />
+                    </button>
+                  ) : (
+                    <button
+                      className="edit-favorite"
+                      type="button"
+                      onClick={() => startEditingFavorite(favorite)}
+                      aria-label={`Edit name for ${favorite.name}`}
+                    >
+                      <Pencil size={17} aria-hidden="true" />
+                    </button>
+                  )}
                   <button
                     className="remove-favorite"
                     type="button"

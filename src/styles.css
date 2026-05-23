@@ -37,7 +37,7 @@ button {
   display: grid;
   grid-template-columns: minmax(300px, 440px) minmax(360px, 1fr) minmax(250px, 310px);
   align-items: center;
-  gap: 44px;
+  gap: 58px;
 }
 
 .recipe-panel {
@@ -125,12 +125,12 @@ h1 {
   display: grid;
   place-items: end center;
   overflow: hidden;
-  padding-left: 18px;
+  padding-left: 42px;
 }
 
 .ingredient-rain {
   position: absolute;
-  inset: 0 6% 34%;
+  inset: 0 2% 40% 12%;
   pointer-events: none;
 }
 
@@ -311,6 +311,7 @@ h1 {
   display: grid;
   justify-items: center;
   filter: drop-shadow(0 28px 30px rgba(69, 53, 32, 0.18));
+  transform: translateX(28px);
 }
 
 .lid {
@@ -535,7 +536,7 @@ h1 {
 
 .favorite-card {
   display: grid;
-  grid-template-columns: 1fr auto;
+  grid-template-columns: 1fr auto auto;
   gap: 12px;
   padding: 13px;
   border: 1px solid rgba(23, 33, 28, 0.12);
@@ -559,6 +560,26 @@ h1 {
   line-height: 1.35;
 }
 
+.favorite-name-input {
+  width: 100%;
+  min-height: 34px;
+  margin: -4px 0 4px;
+  padding: 6px 8px;
+  border: 1px solid rgba(29, 68, 48, 0.28);
+  border-radius: 8px;
+  color: #14231b;
+  background: rgba(255, 255, 255, 0.88);
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1.1;
+}
+
+.favorite-name-input:focus {
+  outline: 3px solid rgba(158, 242, 138, 0.36);
+}
+
+.edit-favorite,
 .remove-favorite {
   width: 34px;
   height: 34px;
@@ -566,9 +587,22 @@ h1 {
   place-items: center;
   border: 0;
   border-radius: 8px;
+  cursor: pointer;
+}
+
+.edit-favorite {
+  color: #244f39;
+  background: rgba(222, 241, 229, 0.9);
+}
+
+.edit-favorite:hover {
+  color: #fffdf7;
+  background: #28623d;
+}
+
+.remove-favorite {
   color: #67443b;
   background: rgba(255, 221, 209, 0.82);
-  cursor: pointer;
 }
 
 .remove-favorite:hover {
@@ -671,6 +705,14 @@ h1 {
   .blender-stage {
     min-height: 520px;
     padding-left: 0;
+  }
+
+  .ingredient-rain {
+    inset: 0 4% 38%;
+  }
+
+  .blender {
+    transform: none;
   }
 
   .jar {
